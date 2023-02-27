@@ -42,9 +42,9 @@ module butterfly(
         end
     end
 
-    assign y_top_re = {x_top_tmp_re[31],x_top_tmp_re[13+15:13]};
-    assign y_top_im = {x_top_tmp_im[31],x_top_tmp_im[13+15:13]};
-    assign y_bottom_re = {x_bottom_tmp_re[31],x_bottom_tmp_re[13+15:13]};
-    assign y_bottom_im = {x_bottom_tmp_im[31],x_bottom_tmp_im[13+15:13]};
+    assign y_top_re = {x_top_tmp_re[31],x_top_tmp_re[13+14:13]};
+    assign y_top_im = {x_top_tmp_im[31],x_top_tmp_im[13+14:13]};
+    assign y_bottom_re = {x_bottom_tmp_re[31],x_bottom_tmp_re[13+14:13]};
+    assign y_bottom_im = {x_bottom_tmp_im[31],x_bottom_tmp_im[13+14:13]};
 
 endmodule
