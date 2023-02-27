@@ -7,7 +7,7 @@ module fft_64(
     input [15:0] x_re,
     input [15:0] x_im,
     output reg valid_out,
-    output sop_out,
+    output reg sop_out,
     output reg [15:0] y_re,
     output reg [15:0] y_im
     );
@@ -171,7 +171,7 @@ module fft_64(
     //输入计数器
     wire [6:0] en_buf;
 
-    counter #(.threshold(62)) control_u1(
+    counter control_u1(
         .clk(clk),
         .rst_n(rst_n),
         .valid(valid_in),
@@ -276,7 +276,7 @@ module fft_64(
     endgenerate
 
     //从缓冲区输出
-    assign sop_out = en_buf[6];
+    // assign sop_out = en_buf[6];
     reg signed [15:0] y_re_tmp[63:0];
     reg signed [15:0] y_im_tmp[63:0];
 
@@ -286,19 +286,22 @@ module fft_64(
             for(m=0;m<64;m=m+1) begin
                 y_re_tmp[m] <= 0;
                 y_im_tmp[m] <= 0;
-                valid_out <=0;
+                valid_out <= 0;
+                sop_out <= 0;
             end
         end
         else if(en_buf[6]) begin
             for(m=0;m<64;m=m+1) begin
                 y_re_tmp[m] <= x_re_buf[6][m];
                 y_im_tmp[m] <= x_im_buf[6][m];
+                sop_out <= en_buf[6];
             end
         end
         else begin
             for(m=0;m<63;m=m+1) begin
                 y_re_tmp[m] <= y_re_tmp[m+1];
                 y_im_tmp[m] <= y_im_tmp[m+1];
+                sop_out <= 0;
             end
         end
     end
@@ -317,7 +320,7 @@ module fft_64(
 
     //输出计数器
     wire over;
-    counter #(.threshold(64)) counter_u2(
+    counter counter_u2(
         .clk(clk),
         .rst_n(rst_n),
         .valid(1'b1),
@@ -325,8 +328,8 @@ module fft_64(
         .ready(over)
     );
 
-    always@(negedge sop_out) begin
-        if(!sop_out) valid_out <= 1'b1;
+    always@(posedge sop_out) begin
+        if(sop_out) valid_out <= 1'b1;
     end
     always@(posedge over) begin
         if(over) valid_out <= 1'b0;

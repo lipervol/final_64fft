@@ -18,7 +18,7 @@ module fft_64_tb();
         rst_n <= 1'b0;
         sop_in <= 1'b0;
         valid_in <= 1'b0;
-        inv <= 1;
+        inv <= 0;
         x_re <= 0;
         x_im <= 0;
         #30
@@ -225,7 +225,7 @@ module fft_64_tb();
 
     integer w_file;
 
-    initial w_file = $fopen("C:/Users/22060/Desktop/fft_output.txt","w+");
+    initial w_file = $fopen("./fft_output.txt","w+");
 
     always@(posedge clk) begin
         if(valid_out == 1'b1) begin

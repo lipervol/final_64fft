@@ -1,6 +1,4 @@
-module counter#(
-    parameter threshold = 64
-)(
+module counter(
     input clk,
     input rst_n,
     input valid,
@@ -40,7 +38,7 @@ module counter#(
             cnt <= 0;
             ready <= 0;
         end
-        else if(cnt == threshold) begin 
+        else if(cnt == 63) begin 
             cnt <= 0;
             ready <= 1;
         end
